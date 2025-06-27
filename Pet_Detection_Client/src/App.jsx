@@ -8,12 +8,6 @@ function App() {
 
   // Send request to localhost:5000 when component mounts
 
-  const sendRequest = () => {
-    fetch('http://localhost:5000')
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
-  };
 
   const [name, setName] = useState('');
 
@@ -39,7 +33,7 @@ function App() {
         />
         <button
           onClick={() => {
-            fetch('http://localhost:5000', {
+            fetch('https://petdetection-production.up.railway.app/', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
