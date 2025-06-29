@@ -1,4 +1,4 @@
-import User from "../models/User.js";
+import User from "../Models/User.js";
 import { UnauthorizedError } from "../Errors/errors.js";
 
 const tokenVerifier = async (req, res, next) => {
