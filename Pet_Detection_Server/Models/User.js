@@ -7,9 +7,6 @@ import { UnauthorizedError } from "../Errors/errors.js";
 
 const UserSchema = new mongoose.Schema(
     {
-        googleId: { 
-            type: String, 
-        },
         username: {
             type: String,
             required: true,
@@ -25,6 +22,7 @@ const UserSchema = new mongoose.Schema(
             type: String,
             minlength: [8, "Password must be at least 8 characters long"],
             maxlength: [128, "Password must be less than 128 characters long"],
+            required: true,
             validate: {
                 validator: function (value) {
                     // Require at least one uppercase letter, one lowercase letter, one special character and one number
@@ -63,7 +61,6 @@ UserSchema.pre("save", async function (next) {
 
 // Compare password with hashed password in database
 UserSchema.methods.comparePassword = function (password) {
-    if (!this.password) return false; // Prevent checking if no password exists
     return bcrypt.compare(password, this.password);
 };
 
