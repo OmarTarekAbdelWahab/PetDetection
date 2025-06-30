@@ -1,3 +1,4 @@
+import { getAnalysisHistory } from '../../../Pet_Detection_Server/services/userServices';
 import api from './apiService';
 
 export const userService = {
@@ -9,6 +10,16 @@ export const userService = {
 
   async analyzeImage(imageBase64) {
     const response = await api.post('/analyzeImage', { image_base64: imageBase64 });
+    return response.data;
+  },
+
+  async getAnalysisHistory() {
+    const response = await api.get('/analysisHistory');
+    return response.data.history;
+  },
+
+  async getAnalysisDetails(analysisId) {
+    const response = await api.get(`/analysisHistory/${analysisId}`);
     return response.data;
   },
 };

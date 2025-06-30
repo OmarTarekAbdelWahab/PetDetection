@@ -37,12 +37,16 @@ export const analyzeImage = async (req, res, next) => {
         const data = await response.json();
 
         const processing_time = Date.now() - start_time;
-
-        console.log(`Processing time: ${processing_time} ms`); 
+        console.log(`Image analysis completed in ${processing_time}ms`);
 
         console.log(`classification: ${data.classification}`)
         data.detection.forEach((detection, index) => { console.log(`detection: ${detection.label} (${detection.confidence})`) });
         console.log(`segmentation_classes: ${data.segmentation_classes}`)
+
+        console.log(`input_image_base64 size: ${image_base64 ? Buffer.byteLength(image_base64, 'base64') : 0} bytes`);
+        console.log(`classification_image_base64 size: ${data.classification_image_base64 ? Buffer.byteLength(data.classification_image_base64, 'base64') : 0} bytes`);
+        console.log(`detection_image_base64 size: ${data.detection_image_base64 ? Buffer.byteLength(data.detection_image_base64, 'base64') : 0} bytes`);
+        console.log(`segmentation_image_base64 size: ${data.segmentation_image_base64 ? Buffer.byteLength(data.segmentation_image_base64, 'base64') : 0} bytes`);
 
         // Save the analysis result to the database
         const picture = new PictureModel({
@@ -83,7 +87,13 @@ export const analyzeImage = async (req, res, next) => {
 export const getAnalysisHistory = async (req, res, next) => {
     try {
         const userId = req.user._id;
-        const history = await PictureModel.find({ userId }).sort({ createdAt: -1 });
+        const startTime = Date.now();
+        const history = await PictureModel.find({ userId }, {
+            classificationImage: 0,
+            detectionImage: 0,
+            segmentationImage: 0,
+        }).sort({ createdAt: -1 });
+        console.log(`Fetched ${history.length} analysis records in ${Date.now() - startTime}ms`);
 
         return res.status(200).json({
             status: 1,
@@ -93,9 +103,6 @@ export const getAnalysisHistory = async (req, res, next) => {
                 classification: picture.classification,
                 detection: picture.detection,
                 segmentation_classes: picture.segmentation_classes,
-                classificationImage: picture.classificationImage,
-                detectionImage: picture.detectionImage,
-                segmentationImage: picture.segmentationImage,
                 processingTime: picture.processingTime,
                 createdAt: picture.createdAt,
             })),
@@ -104,3 +111,41 @@ export const getAnalysisHistory = async (req, res, next) => {
         next(error);
     }
 };
+
+export const getAnalysisDetails = async (req, res, next) => {
+    try {
+        const { analysisId } = req.params;
+        const userId = req.user._id;
+
+        const startTime = Date.now();
+        const analysis = await PictureModel.findOne({ _id: analysisId, userId }, {
+            inputImage: 0,
+            classification: 0,
+            detection: 0,
+            segmentation_classes: 0,
+            processingTime: 0,
+            createdAt: 0,
+        });
+
+        console.log(`Fetched analysis details in ${Date.now() - startTime}ms`);
+
+        if (!analysis) {
+            return res.status(404).json({ status: 0, message: "Analysis not found" });
+        }
+
+        return res.status(200).json({
+            status: 1,
+            analysis: {
+                _id: analysis._id,
+                classificationImage: analysis.classificationImage,
+                detectionImage: analysis.detectionImage,
+                segmentationImage: analysis.segmentationImage,
+            },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+

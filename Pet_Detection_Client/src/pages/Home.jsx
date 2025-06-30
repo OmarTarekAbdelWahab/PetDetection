@@ -172,15 +172,12 @@ function Home() {
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             About Us
           </h2>
-          <p className="text-xl mb-10 max-w-3xl mx-auto opacity-90">
-            Join thousands of pet lovers who trust our AI technology for accurate pet detection and analysis.
-          </p>
           <div className="w-full max-w-sm mx-auto">
             <button
-              onClick={() => navigator("/analyze")}
+              onClick={() => navigator("/about")}
               className="w-full bg-white text-primary font-bold py-4 px-8 rounded-xl hover:bg-gray-100 transition-all duration-200 text-lg shadow-xl hover:shadow-2xl hover:scale-105"
             >
-              🎯 Analyze Your Pet Now
+              <span>Learn More About Pet Detector</span>
             </button>
           </div>
         </div>

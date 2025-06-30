@@ -62,7 +62,7 @@ const Login = ({ navigateOnSuccess }) => {
                 <form onSubmit={handleLogin} className="space-y-6">
                     <FormField
                     type="Email"
-                    label="Username"
+                    label="Email"
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}

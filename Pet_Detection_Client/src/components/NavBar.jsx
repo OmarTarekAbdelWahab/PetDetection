@@ -42,12 +42,18 @@ function Navbar() {
           >
             History
           </Link>
+          <Link 
+            to="/about" 
+            className="px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-200 font-medium text-lg backdrop-blur-sm border border-transparent hover:border-white/20"
+          >
+            About
+          </Link>
           
           <div className="w-px h-6 bg-white/30 mx-2"></div>
           
           <button
             onClick={handleLogout}
-            className="bg-white/90 text-primary font-semibold px-5 py-2 rounded-lg hover:bg-white hover:shadow-lg transition-all duration-200 flex items-center space-x-2 border border-white/20 hover:scale-105"
+            className="bg-white/90 text-primary font-semibold px-5 py-2 rounded-lg hover:bg-white hover:shadow-lg transition-all duration-200 flex items-center space-x-2 border border-white/20 hover:scale-105 cursor-pointer "
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
