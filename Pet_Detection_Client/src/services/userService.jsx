@@ -1,4 +1,3 @@
-import { getAnalysisHistory } from '../../../Pet_Detection_Server/services/userServices';
 import api from './apiService';
 
 export const userService = {
