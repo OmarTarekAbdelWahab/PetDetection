@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { userService } from "../services/userService";
 import Loading from "../components/Loading";
 import Fail from "../components/Fail";
-import { formatDate } from "../utils/utility";
+import { formatDate, isPet } from "../utils/utility";
 import AnalysisDetails from "../components/AnalysisDetails";
 
 function History() {
@@ -141,6 +141,18 @@ function History() {
                                     <div className="absolute top-2 right-2 bg-primary text-white px-2 py-1 rounded-full text-xs font-medium">
                                         {analysis.classification}
                                     </div>
+                                    {(() => {
+                                        const petPresence = isPet(analysis.classification);
+                                        return (
+                                            <div className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs font-medium ${
+                                                petPresence
+                                                    ? 'bg-green-500 text-white' 
+                                                    : 'bg-gray-500 text-white'
+                                            }`}>
+                                                {petPresence === 'success' ? 'Pet Found' : 'No Pet'}
+                                            </div>
+                                        );
+                                    })()}
                                 </div>
 
                                 <div className="p-6">

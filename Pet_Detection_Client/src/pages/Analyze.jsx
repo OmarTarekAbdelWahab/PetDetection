@@ -3,6 +3,7 @@ import { useState } from "react";
 import { userService } from "../services/userService";
 import Button from "../components/Button";
 import AnalysisDetails from "../components/AnalysisDetails";
+import { isPet } from "../utils/utility";
 
 function AnalyzePage() {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -212,15 +213,39 @@ function AnalyzePage() {
                     </div>
 
                     {responseData.classification && (
-                        <AnalysisDetails
-                            title="Analysis Finished"
-                            analysisTimeString={new Date().toLocaleString()}
-                            processingTime={responseData.processingTime}
-                            images={images}
-                            classification={responseData.classification}
-                            detection={responseData.detection}
-                            segmentation_classes={responseData.segmentation_classes}
-                        />
+                        <>
+                            {(() => {
+                                const petPresence = isPet(responseData.classification);
+                                return (
+                                    <div className={`w-full max-w-md mx-auto mb-6 rounded-xl p-6 border-2 shadow-lg ${
+                                        petPresence
+                                            ? 'bg-green-50 border-green-300 text-green-800' 
+                                            : 'bg-gray-50 border-gray-300 text-gray-700'
+                                    }`}>
+                                        <div className="flex items-center justify-center space-x-3">
+                                            <div className="text-center">
+                                                <p className="font-bold text-xl">
+                                                    {petPresence ? "Pet Found" : "No Pet Detected"}
+                                                </p>
+                                                <p className="text-sm mt-1 opacity-80">
+                                                    Classification: {responseData.classification}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })()}
+
+                            <AnalysisDetails
+                                title="Analysis Finished"
+                                analysisTimeString={new Date().toLocaleString()}
+                                processingTime={responseData.processingTime}
+                                images={images}
+                                classification={responseData.classification}
+                                detection={responseData.detection}
+                                segmentation_classes={responseData.segmentation_classes}
+                            />
+                        </>
                     )}
                 </div>
             </div>

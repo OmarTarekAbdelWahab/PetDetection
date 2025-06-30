@@ -1,3 +1,5 @@
+import petLabels from "./petSet";
+
 export const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
         year: "numeric",
@@ -20,3 +22,9 @@ export const formatProcessingTime = (seconds) => {
 
     return formattedTime;
 };
+
+
+
+export function isPet(label) {
+    return petLabels.has(label);
+}

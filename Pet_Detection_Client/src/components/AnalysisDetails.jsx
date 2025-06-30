@@ -1,4 +1,4 @@
-import { formatDate, formatProcessingTime } from "../utils/utility";
+import { formatDate, formatProcessingTime, isPet } from "../utils/utility";
 
 function AnalysisDetails({
     title = "Analysis Details",
@@ -38,7 +38,6 @@ function AnalysisDetails({
                 </div>
             </div>
 
-            {/* Original Image */}
             {images.input && <div className="bg-white rounded-xl p-6 shadow-lg mb-8 border border-gray-100">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">Original Image</h2>
                 <div className="flex justify-center">
@@ -50,9 +49,7 @@ function AnalysisDetails({
                 </div>
             </div>}
 
-            {/* Results Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Classification */}
                 <div className="flex flex-col items-center bg-white shadow-lg rounded-xl p-6 border border-gray-100">
                     <h3 className="text-2xl font-bold mb-4 text-gray-800 border-b-2 border-primary pb-2">
                         Classification
@@ -62,14 +59,33 @@ function AnalysisDetails({
                         alt="Classification"
                         className="w-full h-auto rounded-lg border border-gray-200 mb-6 shadow-sm"
                     />
-                    <div className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
-                        <div className="flex items-center justify-between">
-                            <span className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
-                                Detected Animal:
-                            </span>
-                            <span className="text-lg font-bold text-primary bg-white px-3 py-1 rounded-full shadow-sm">
-                                {classification}
-                            </span>
+                    <div className="w-full space-y-4">
+                        {(() => {
+                            const petPresence = isPet(classification);
+                            return (
+                                <div className={`w-full rounded-lg p-4 border-2 ${
+                                    petPresence
+                                        ? 'bg-green-50 border-green-200 text-green-800' 
+                                        : 'bg-gray-50 border-gray-200 text-gray-700'
+                                }`}>
+                                    <div className="flex items-center justify-center space-x-2">
+                                        <span className="font-semibold text-lg">
+                                            {petPresence ? "Pet Found" : "No Pet Detected"}
+                                        </span>
+                                    </div>
+                                </div>
+                            );
+                        })()}
+                        
+                        <div className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                            <div className="flex items-center justify-between">
+                                <span className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                                    Detected Animal:
+                                </span>
+                                <span className="text-lg font-bold text-primary bg-white px-3 py-1 rounded-full shadow-sm">
+                                    {classification}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
