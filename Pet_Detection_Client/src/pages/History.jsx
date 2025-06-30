@@ -149,7 +149,7 @@ function History() {
                                                     ? 'bg-green-500 text-white' 
                                                     : 'bg-gray-500 text-white'
                                             }`}>
-                                                {petPresence === 'success' ? 'Pet Found' : 'No Pet'}
+                                                {petPresence? 'Pet Found' : 'No Pet'}
                                             </div>
                                         );
                                     })()}
