@@ -51,7 +51,7 @@ const SignUp = ({ navigateOnSuccess }) => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="w-full max-w-5xl bg-white shadow-xl rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
-        <div className="flex flex-col bg-primary text-white p-0">
+        <div className="hidden md:flex flex-col bg-primary text-white p-0">
             <div className="w-full">
                 <img
                 src="/photo.jpg"

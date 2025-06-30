@@ -43,7 +43,7 @@ export const authService = {
     // } catch (error) {
     //   console.error('Logout failed:', error);
     // } finally {
-    //   storageHandler.clearAllFromStorage();  
+    storageHandler.clearAllFromStorage();  
     // }
   },
 };
