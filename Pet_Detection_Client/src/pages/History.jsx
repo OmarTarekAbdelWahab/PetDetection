@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { userService } from "../services/userService";
 import Loading from "../components/Loading";
 import Fail from "../components/Fail";
-import { formatDate, isPet } from "../utils/utility";
+import { formatDate, formatProcessingTime, isPet } from "../utils/utility";
 import AnalysisDetails from "../components/AnalysisDetails";
 
 function History() {
+    const navigator = useNavigate();
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedAnalysis, setSelectedAnalysis] = useState(null);
     const [error, setError] = useState(null);
-    const [loadingDetails, setLoadingDetails] = useState(false);
+    const [loadingDetailsId, setLoadingDetailsId] = useState(null);
 
     useEffect(() => {
         fetchHistory();
@@ -37,14 +39,14 @@ function History() {
             setSelectedAnalysis(analysis);
             return;
         }
-        setLoadingDetails(true);
+        setLoadingDetailsId(analysis._id);
         userService.getAnalysisDetails(analysis._id)
             .then(details => {
                 analysis.classificationImage = details.analysis.classificationImage;
                 analysis.detectionImage = details.analysis.detectionImage;
                 analysis.segmentationImage = details.analysis.segmentationImage;
                 setSelectedAnalysis(analysis);
-                setLoadingDetails(false);
+                setLoadingDetailsId(null);
             });
     };
 
@@ -78,7 +80,6 @@ function History() {
         return (
             <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 p-8">
                 <div className="max-w-6xl mx-auto">
-                    {/* Back Button */}
                     <button
                         onClick={handleBackToHistory}
                         className="mb-6 flex items-center space-x-2 text-primary hover:text-primaryDark transition font-medium cursor-pointer"
@@ -101,8 +102,7 @@ function History() {
             </div>
         );
     }
-
-    // History list view
+ 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 p-8">
             <div className="max-w-6xl mx-auto">
@@ -120,12 +120,12 @@ function History() {
                         <div className="text-6xl mb-4">🐾</div>
                         <h2 className="text-2xl font-bold text-gray-800 mb-2">No Analysis History</h2>
                         <p className="text-gray-600 mb-6">You haven't analyzed any images yet. Start by uploading your first pet photo!</p>
-                        <a 
-                            href="/analyze"
-                            className="inline-block bg-primary text-white px-6 py-3 rounded-lg hover:bg-primaryDark transition font-medium"
+                        <button
+                            onClick={() => navigator('/analyze')}
+                            className="inline-block bg-primary text-white px-6 py-3 rounded-lg hover:bg-primaryDark transition font-medium cursor-pointer"
                         >
                             🔍 Analyze Your First Image
-                        </a>
+                        </button>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -168,7 +168,7 @@ function History() {
                                     <div className="space-y-2 mb-4">
                                         <div className="flex items-center justify-between text-sm">
                                             <span className="text-gray-600">Processing Time:</span>
-                                            <span className="font-medium">{(analysis.processingTime / 1000).toFixed(2)}s</span>
+                                            <span className="font-medium">{formatProcessingTime(analysis.processingTime)}</span>
                                         </div>
                                         <div className="flex items-center justify-between text-sm">
                                             <span className="text-gray-600">Objects Detected:</span>
@@ -184,7 +184,7 @@ function History() {
                                         </div>
                                     </div>
                                     {
-                                        loadingDetails?
+                                        loadingDetailsId == analysis._id?
                                         <button
                                             disabled
                                             className="w-full bg-gray-300 text-gray-500 py-2 px-4 rounded-lg cursor-not-allowed"
