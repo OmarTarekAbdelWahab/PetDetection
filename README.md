@@ -37,6 +37,9 @@ Pet Detection is a full-stack web application that leverages state-of-the-art de
 
 <img width="996" height="668" alt="image" src="https://github.com/user-attachments/assets/a1ba4475-841d-406c-9a33-049e1b7b9339" />
 
+<img width="1103" height="615" alt="image" src="https://github.com/user-attachments/assets/618dee59-93e3-465c-8a4d-844482536ea6" />
+<img width="1131" height="614" alt="image" src="https://github.com/user-attachments/assets/a45b6439-59d9-4e9b-bfa8-ce3b20127349" />
+
 
 ## Architecture
 
