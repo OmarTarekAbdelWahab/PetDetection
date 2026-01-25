@@ -62,7 +62,7 @@ Built with **FastAPI**, providing:
 
 ## Tech Stack
 
-- **Backend**: FastAPI, PyTorch, TorchVision
+- **Backend**: FastAPI, PyTorch, TorchVision, Node.js
 - **Frontend**: JavaScript, HTML, CSS
 - **ML Models**: YOLOv5, ResNet50, DeepLabv3
 - **Deployment**: Docker
